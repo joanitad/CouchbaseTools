@@ -17,7 +17,11 @@ var view_name = config.view_name;
 var query = ViewQuery.from(design_doc, view_name);
 
 var customer_id = config.customer_id;
-query.range(customer_id, customer_id + 1 ,false);
+if(customer_id){
+	query.range(customer_id, customer_id + 1 ,false);
+}else{
+	console.log('Attempting mass delete for all customers');
+}
 
 bucket.query(query, function(error, results) {
     if(error) {
