@@ -1,6 +1,8 @@
 //http://blog.couchbase.com/mass-deleting-documents-by-compound-key-prefix-using-node-js
 var express = require("express");
 var couchbase = require("couchbase");
+var argv = require('yargs').argv;
+var yesno = require('yesno');
 var yaml = require("js-yaml");
 var fs = require("fs");
 var config = yaml.load(fs.readFileSync("config.yml"));
@@ -23,19 +25,45 @@ if(customer_id){
 	console.log('Attempting mass delete for all customers');
 }
 
+function massDelete(results){
+  for(i in results) {
+        console.log("Deleting "+results[i].id+" for customer_id " + results[i].key);
+        bucket.remove(results[i].id,function(error, result) {
+            if(error){
+                console.log("There was an error removing the doc ",error);
+            }
+        });
+    }
+  console.log("Mass Delete complete");
+}
 bucket.query(query, function(error, results) {
     if(error) {
         return console.log(error);
     }
     console.log("Found " + results.length + " documents to delete");
-    for(i in results) {
-        bucket.remove(results[i].id, function(error, result) {
-            console.log("Deleting " + results[i].key);
-        });
+    if(results.length>0){
+        if(argv.dryrun){
+           console.log("Dry run: Preparing to delete the following");
+           for(i in results) {
+        	console.log(results[i].id+" for customer_id " + results[i].key);
+           }
+           yesno.ask('Does this look like what you wanted ?(Y/N) : ', true , function (ok) {
+        	if(ok) {
+        		console.log("Proceeding to delete...");
+                        massDelete(results);
+   		} else {
+        		console.log("Aborting...");
+                        process.exit(1);
+    		}
+	   });
+  
+         }else{
+		massDelete(results);
+         }
+    }else{
+         console.log("No Documents to delete ...");
     }
-    console.log("Mass Delete complete");
 });
-
 var server = app.listen(3000, function () {
     console.log("Listening on port %s...", server.address().port);
 });
