@@ -22,7 +22,6 @@
   "dependencies": {
     "couchbase": "^2.1.6",
     "express": "^4.13.4",
-    "js-yaml": "^3.6.0",
     "yargs": "^4.6.0",
     "yesno": "0.0.1"
   }

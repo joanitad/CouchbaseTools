@@ -1,24 +1,26 @@
 //http://blog.couchbase.com/mass-deleting-documents-by-compound-key-prefix-using-node-js
 var express = require("express");
 var couchbase = require("couchbase");
-var argv = require('yargs').argv;
+var argv = require('yargs')
+           .usage("$0 -conn string -bucket string -pwd string -designdoc string -viewname string -cid number -dryrun")
+  .demand(['conn','bucket','pwd','designdoc','viewname'])
+  .help()
+  .argv
 var yesno = require('yesno');
-var yaml = require("js-yaml");
-var fs = require("fs");
-var config = yaml.load(fs.readFileSync("config.yml"));
 var app = express();
 
-var conn = config.couchbase_connection;
-var bucket_name = config.couchbase_bucket;
-var bucket_pwd = config.couchbase_bucket_password;
+var conn = argv.conn;
+var bucket_name = argv.bucket;
+var bucket_pwd = argv.pwd;
+var design_doc = argv.designdoc;
+var view_name = argv.viewname;
+var customer_id = argv.cid;
+var help = argv.h;
 var bucket = (new couchbase.Cluster(conn)).openBucket(bucket_name,bucket_pwd);
 
 var ViewQuery = couchbase.ViewQuery;
-var design_doc = config.couchbase_design_doc;
-var view_name = config.view_name;
 var query = ViewQuery.from(design_doc, view_name);
 
-var customer_id = config.customer_id;
 if(customer_id){
 	query.range(customer_id, customer_id + 1 ,false);
 }else{
