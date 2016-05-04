@@ -1,0 +1,8 @@
+  couchbase_bucket: "test_bucket"
+  couchbase_bucket_password: "password"
+  couchbase_connection: "http://127.0.0.1:8091"
+  couchbase_design_doc: "dev_delete"
+
+  customer_id: 2
+
+  view_name: "test_view"

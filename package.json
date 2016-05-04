@@ -1,0 +1,27 @@
+{
+  "name": "mass-delete",
+  "version": "1.0.0",
+  "description": "mass delete of couchbase documents for a certain range and customer id",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joanitad/CouchbaseTools.git"
+  },
+  "keywords": [
+    "mass-delete"
+  ],
+  "author": "jdsouza",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joanitad/CouchbaseTools/issues"
+  },
+  "homepage": "https://github.com/joanitad/CouchbaseTools#readme",
+  "dependencies": {
+    "couchbase": "^2.1.6",
+    "express": "^4.13.4",
+    "js-yaml": "^3.6.0"
+  }
+}
