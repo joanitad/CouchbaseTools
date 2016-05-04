@@ -8,6 +8,7 @@ an optional dryrun argument can be passed on the command line
 
 USAGE 
 
+node mass-delete  (deletes without a prompt)
 node mass-delete --dryrun
 
 
