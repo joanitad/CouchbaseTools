@@ -17,6 +17,7 @@ var view_name = argv.viewname;
 var customer_id = argv.cid;
 var help = argv.h;
 var bucket = (new couchbase.Cluster(conn)).openBucket(bucket_name,bucket_pwd);
+bucket.operationTimeout = 60*1000;
 
 var ViewQuery = couchbase.ViewQuery;
 var query = ViewQuery.from(design_doc, view_name);
